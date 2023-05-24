@@ -4,9 +4,9 @@ import featured from "../../../assets/home/featured.jpg";
 import "./Featured.css";
 const Featured = () => {
   return (
-    <div className="mb-8 featured-item text-white pt-8 my-20">
+    <div className="mb-8 featured-item bg-fixed text-white pt-8 my-20">
       <SectionTitle heading={"From our menu"} subHeading={"Check it out"} />
-      <div className="md:flex justify-center items-center pb-20 pt-12 px-36">
+      <div className="md:flex justify-center items-center bg-slate-500 bg-opacity-60 pb-20 pt-12 px-36">
         <div>
           <img src={featured} alt="" />
         </div>
@@ -21,7 +21,9 @@ const Featured = () => {
             ipsam! Tempore ea nobis, amet corporis sapiente suscipit voluptate
             cupiditate illum id, ad quidem.
           </p>
-          <button className="btn btn-outline">Order Now</button>
+          <button className="btn btn-outline border-0 border-b-4 rounded-lg mt-4">
+            Order Now
+          </button>
         </div>
       </div>
     </div>
