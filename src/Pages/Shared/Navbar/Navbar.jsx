@@ -1,23 +1,57 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { FaOpencart } from "react-icons/fa";
 
+import { AuthContext } from "../../../Providers/AuthProvider";
+import useCart from "../../../Hooks/useCart";
 const Navbar = () => {
+  const { user, logOut } = useContext(AuthContext);
+  const [cart] = useCart();
+  const handleLogout = () => {
+    logOut()
+      .then(() => {})
+      .catch((error) => console.log(error));
+  };
+
   const navOptions = (
     <>
       <li>
         <Link to="/">Home</Link>
       </li>
       <li>
+        <Link to="/secret">Secret</Link>
+      </li>
+      <li>
         <Link to="/menu">Our Menu</Link>
       </li>
       <li>
-        <Link to="/order/salad">Order Food</Link>
+        <Link to="/order/Salad">Order Food</Link>
       </li>
       <li>
-        <Link to="/login">Login</Link>
+        <Link to="/">
+          <button className="btn gap-2">
+            <FaOpencart size={26} />
+            <div className="badge badge-secondary">+{cart?.length || 0}</div>
+          </button>
+        </Link>
       </li>
-      <li>
-        <Link to="/signUp">SignUp</Link>
-      </li>
+      {user ? (
+        <div className="flex justify-center items-center gap-2">
+          <img className="w-10 h-10 rounded-full" src={user.photoURL} alt="" />
+          <button onClick={handleLogout} className="btn btn-ghost">
+            Logout
+          </button>
+        </div>
+      ) : (
+        <>
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+          <li>
+            <Link to="/signUp">SignUp</Link>
+          </li>
+        </>
+      )}
     </>
   );
   return (
