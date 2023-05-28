@@ -28,7 +28,7 @@ const Navbar = () => {
         <Link to="/order/Salad">Order Food</Link>
       </li>
       <li>
-        <Link to="/">
+        <Link to="/dashboard/myCart">
           <button className="btn gap-2">
             <FaOpencart size={26} />
             <div className="badge badge-secondary">+{cart?.length || 0}</div>
