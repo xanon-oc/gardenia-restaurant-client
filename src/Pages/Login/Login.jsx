@@ -7,6 +7,7 @@ import {
 import { AuthContext } from "../../Providers/AuthProvider";
 import toast, { Toaster } from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
+import ThirdPartyAccess from "../Shared/ThirdPartyAccess/ThirdPartyAccess";
 const Login = () => {
   const { signIn } = useContext(AuthContext);
   const [disabled, setDisabled] = useState(true);
@@ -101,6 +102,7 @@ const Login = () => {
               />
             </div>
           </form>
+          <ThirdPartyAccess />
         </div>
       </div>
     </div>

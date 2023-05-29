@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Providers/AuthProvider";
 import toast, { Toaster } from "react-hot-toast";
+import ThirdPartyAccess from "../Shared/ThirdPartyAccess/ThirdPartyAccess";
 const SignUp = () => {
   const { createUser, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -14,18 +15,29 @@ const SignUp = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => {
-    console.log(data);
     createUser(data.email, data.password).then((result) => {
       const loggedUser = result.user;
       console.log(loggedUser);
       updateUserProfile(data.name, data.photoURL)
         .then(() => {
-          console.log("user profile info updated");
-          toast.success("Successfully created account!");
-          navigate("/");
-          reset();
+          const saveUser = { name: data.name, email: data.email };
+          fetch("http://localhost:5000/users", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(saveUser),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              if (data.insertedId) {
+                toast.success("Successfully created account!");
+                navigate("/");
+                reset();
+              }
+            });
         })
-        .catch((error) => console.log(error));
+        .catch((error) => console.log(error.message));
     });
   };
   //   console.log(watch("example"));
@@ -137,6 +149,7 @@ const SignUp = () => {
                 />
               </div>
             </form>
+            <ThirdPartyAccess />
             <p>
               <small>
                 Already have an account <Link to="/login">Login</Link>

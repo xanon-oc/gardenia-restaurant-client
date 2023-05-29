@@ -10,6 +10,7 @@ import {
   signOut,
   updateProfile,
 } from "firebase/auth";
+import axios from "axios";
 
 export const AuthContext = createContext(null);
 
@@ -29,7 +30,10 @@ const AuthProvider = ({ children }) => {
     return signInWithEmailAndPassword(auth, email, password);
   };
 
-  //     return signInWithPopup(auth, googleProvider);
+  const signInWithGoogle = () => {
+    setLoading(true);
+    return signInWithPopup(auth, googleProvider);
+  };
 
   const logOut = () => {
     setLoading(true);
@@ -46,7 +50,19 @@ const AuthProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       console.log("current user", currentUser);
-      setLoading(false);
+      //  get and set token
+
+      if (currentUser) {
+        axios
+          .post("http://localhost:5000/jwt", { email: currentUser.email })
+          .then((data) => {
+            console.log(data.data.token);
+            localStorage.setItem("access-token", data.data.token);
+            setLoading(false);
+          });
+      } else {
+        localStorage.removeItem("access-token");
+      }
     });
     return () => {
       return unsubscribe();
@@ -60,6 +76,7 @@ const AuthProvider = ({ children }) => {
     signIn,
     logOut,
     updateUserProfile,
+    signInWithGoogle,
   };
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>

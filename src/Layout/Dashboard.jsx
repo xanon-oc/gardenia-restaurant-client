@@ -8,11 +8,19 @@ import {
   FaShoppingBag,
   FaMailBulk,
   FaListUl,
+  FaUtensils,
+  FaTasks,
+  FaBook,
+  FaUsers,
 } from "react-icons/fa";
 import useCart from "../Hooks/useCart";
+import useAdmin from "../Hooks/useAdmin";
 
 const Dashboard = () => {
   const [cart] = useCart();
+  // TODO: Load data from server to have dynamic isAdmin based on data
+  // const isAdmin = true;
+  const [isAdmin] = useAdmin();
   return (
     <div className="drawer drawer-mobile">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -28,31 +36,75 @@ const Dashboard = () => {
       <div className="drawer-side">
         <label htmlFor="my-drawer-2" className="drawer-overlay"></label>
         <ul className="menu p-4 w-80 bg-[#D1A054]">
-          <li>
-            <NavLink to="/dashboard/home">
-              <FaHome size={26} />
-              User Home
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/reservations">
-              <FaCalendarAlt size={26} />
-              Reservations
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/dashboard/history">
-              <FaWallet size={26} />
-              Payment History
-            </NavLink>
-          </li>
-          <li className="flex flex-row items-center">
-            <NavLink to="/dashboard/myCart">
-              <FaOpencart size={26} />
-              My Cart
-            </NavLink>
-            <div className="badge badge-secondary">+{cart?.length || 0}</div>
-          </li>
+          {isAdmin ? (
+            <>
+              <li>
+                <NavLink to="/dashboard/home">
+                  <FaHome size={26} />
+                  Admin Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/reservations">
+                  <FaUtensils size={26} />
+                  Add Item
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/history">
+                  <FaTasks size={26} />
+                  Manage Items
+                </NavLink>
+              </li>
+
+              <li className="flex flex-row items-center">
+                <NavLink to="/dashboard/myCart">
+                  <FaBook size={26} />
+                  Manage Bookings
+                </NavLink>
+                <div className="badge badge-secondary">
+                  +{cart?.length || 0}
+                </div>
+              </li>
+              <li>
+                <NavLink to="/dashboard/allUsers">
+                  <FaUsers size={26} />
+                  All Users
+                </NavLink>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <NavLink to="/dashboard/home">
+                  <FaHome size={26} />
+                  User Home
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/reservations">
+                  <FaCalendarAlt size={26} />
+                  Reservations
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/dashboard/history">
+                  <FaWallet size={26} />
+                  Payment History
+                </NavLink>
+              </li>
+              <li className="flex flex-row items-center">
+                <NavLink to="/dashboard/myCart">
+                  <FaOpencart size={26} />
+                  My Cart
+                </NavLink>
+                <div className="badge badge-secondary">
+                  +{cart?.length || 0}
+                </div>
+              </li>
+            </>
+          )}
+
           <div className="divider"></div>
           <li>
             <NavLink to="/">
